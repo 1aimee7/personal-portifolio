@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { motion } from 'framer-motion';
 
@@ -10,22 +11,35 @@ interface ContactForm {
 }
 
 export default function ContactSection() {
-  const { register, handleSubmit, reset } = useForm<ContactForm>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactForm>({
+    defaultValues: {
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    },
+  });
 
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
     try {
+      // Log the data to ensure it's valid
+      console.log('Submitting form data:', data);
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+
       if (response.ok) {
         reset();
         alert('Message sent successfully!');
       } else {
-        alert('Failed to send message. Please try again.');
+        const errorData = await response.json();
+        alert(errorData.message || 'Failed to send message. Please try again.');
       }
-    } catch (error) {
+    } catch {
+      console.error('Error submitting form');
       alert('Failed to send message. Please try again.');
     }
   };
@@ -38,7 +52,7 @@ export default function ContactSection() {
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary"></span>
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-4 max-w-xl mx-auto text-center">
-          Interested in working together? I'd love to hear from you!
+          Interested in working together? I&apos;d love to hear from you!
         </p>
         <div className="flex flex-col md:flex-row gap-12 mt-8">
           <div className="md:w-3/5">
@@ -50,23 +64,31 @@ export default function ContactSection() {
                     Full Name
                   </label>
                   <input
-                    {...register('name', { required: true })}
+                    {...register('name', { required: 'Name is required' })}
                     id="name"
                     className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Aimee Ishimwe"
                   />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                     Email Address
                   </label>
                   <input
-                    {...register('email', { required: true })}
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                        message: 'Invalid email address',
+                      },
+                    })}
                     id="email"
                     type="email"
                     className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="aimeishimwe25@gmail.com"
                   />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                 </div>
               </div>
               <div>
@@ -74,23 +96,25 @@ export default function ContactSection() {
                   Subject
                 </label>
                 <input
-                  {...register('subject', { required: true })}
+                  {...register('subject', { required: 'Subject is required' })}
                   id="subject"
                   className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Your project"
                 />
+                {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
               </div>
               <div>
                 <label htmlFor="message" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                   Message
                 </label>
                 <textarea
-                  {...register('message', { required: true })}
+                  {...register('message', { required: 'Message is required' })}
                   id="message"
                   className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   rows={5}
                   placeholder="Tell me about your project ..."
                 />
+                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
               </div>
               <motion.button
                 whileHover={{ scale: 1.05 }}
