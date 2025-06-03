@@ -21,14 +21,14 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center p-6 bg-gray-100 dark:bg-gray-900 scroll-mt-20">
+    <section id="about" className="min-h-screen flex items-center justify-center p-6 bg-gray-100 dark:bg-gray-900 scroll-mt-16">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         className="max-w-5xl mx-auto text-center"
       >
-        <h2 className="text-4xl font-bold text-black dark:text-white">My Journey</h2>
+        <h2 className="text-4xl font-bold text-gray-800 dark:text-white">My Journey</h2>
         <p className="text-lg text-primary mt-2">From Novice to Innovator</p>
         <div className="mt-8 flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2 flex flex-col items-center">
@@ -57,10 +57,10 @@ export default function AboutSection() {
             </p>
             <motion.a
               href="/resume.pdf"
-              download
+              download="Aimee_Ishimwe_Mukashyaka_Resume.pdf"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-6 inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-[#e69520] transition duration-300"
+              className="mt-6 inline-block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-[#e69520] transition duration-300 shadow-md"
             >
               Download Resume
             </motion.a>
