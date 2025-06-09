@@ -3,7 +3,6 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { motion } from 'framer-motion';
 
-
 interface ContactForm {
   name: string;
   email: string;
@@ -23,13 +22,20 @@ export default function ContactSection() {
 
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
     try {
-      // Log the data to ensure it's valid
       console.log('Submitting form data:', data);
 
-      const response = await fetch('/api/contact', {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('subject', data.subject);
+      formData.append('message', data.message);
+
+      const response = await fetch('https://formspree.io/f/xgvyayre', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          Accept: 'application/json',
+        },
+        body: formData,
       });
 
       if (response.ok) {
@@ -39,8 +45,8 @@ export default function ContactSection() {
         const errorData = await response.json();
         alert(errorData.message || 'Failed to send message. Please try again.');
       }
-    } catch {
-      console.error('Error submitting form');
+    } catch (error) {
+      console.error('Error submitting form', error);
       alert('Failed to send message. Please try again.');
     }
   };
