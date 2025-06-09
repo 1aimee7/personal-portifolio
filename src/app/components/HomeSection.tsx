@@ -16,7 +16,8 @@ export default function HomeSection() {
           transition={{ duration: 0.8 }}
           className="md:w-1/2 text-center md:text-left"
         >
-          <p className="text-lg text-yellow-500 uppercase font-semibold mb-2">Hello, I'm</p>
+         <p className="text-lg text-yellow-500 uppercase font-semibold mb-2">Hello, I&apos;m</p>
+
           <h1 className="text-6xl font-extrabold text-white">AIMEE ISHIMWE</h1>
           <p className="text-2xl text-yellow-500 font-semibold mt-2">Web Developer & UI/UX Designer</p>
           <p className="text-gray-300 mt-6 max-w-xl mx-auto md:mx-0 text-lg leading-relaxed">

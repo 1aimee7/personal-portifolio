@@ -13,6 +13,7 @@ export async function POST(request: Request) {
     console.log('Received contact form:', data);
     return NextResponse.json({ message: 'Message sent successfully' }, { status: 200 });
   } catch (error) {
+    console.error('Failed to process request:', error);
     return NextResponse.json({ message: 'Failed to send message' }, { status: 500 });
   }
 }
