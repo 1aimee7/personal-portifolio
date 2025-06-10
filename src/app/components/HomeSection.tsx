@@ -7,9 +7,8 @@ import { ArrowRight, Download, MapPin, Award } from 'lucide-react';
 
 const ProfessionalHeroSection = () => {
   const stats = [
-    { number: '4+', label: 'Years Experience' },
-    { number: '50+', label: 'Projects Completed' },
-    { number: '25+', label: 'Happy Clients' }
+    { number: '50+', label: 'Code Commits' },
+    { number: '50+', label: 'Design Iterations' }
   ];
 
   const expertise = [
@@ -48,7 +47,7 @@ const ProfessionalHeroSection = () => {
               className="inline-flex items-center space-x-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full px-4 py-2"
             >
               <Award size={16} className="text-yellow-400" />
-              <span className="text-yellow-400 font-medium text-sm">Senior Frontend Developer</span>
+              <span className="text-yellow-400 font-medium text-sm">Frontend Developer</span>
             </motion.div>
 
             {/* Main Heading */}
