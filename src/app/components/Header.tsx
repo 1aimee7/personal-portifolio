@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { FaMoon, FaSun, FaCode, FaTimes } from 'react-icons/fa';
+import { FaCode, FaTimes } from 'react-icons/fa';
 import { HiMenuAlt3 } from 'react-icons/hi';
 
 const navItems = [
@@ -16,10 +16,8 @@ const navItems = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll effect for header background
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 20;
@@ -30,46 +28,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Load theme from localStorage or system preference on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    } else {
-      // Fallback to system preference if no saved theme
-      setIsDarkMode(prefersDark);
-      if (prefersDark) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-    }
-  }, []);
-
-  // Toggle theme and update DOM
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => {
-      const newMode = !prev;
-      if (newMode) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-      return newMode;
-    });
-  };
-
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -77,7 +35,7 @@ export default function Header() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20'
           : 'bg-transparent'
       }`}
     >
@@ -93,7 +51,7 @@ export default function Header() {
             </div>
             <div className="flex items-center">
               <span className="text-yellow-400 group-hover:text-yellow-300 transition-colors">AIMEE</span>
-              <span className="text-gray-800 dark:text-white ml-2 group-hover:text-gray-600 dark:group-hover:text-gray-200 transition-colors">ISHIMWE</span>
+              <span className="text-gray-800 ml-2 group-hover:text-gray-600 transition-colors">ISHIMWE</span>
             </div>
           </Link>
 
@@ -109,7 +67,7 @@ export default function Header() {
                 >
                   <Link
                     href={`#${item.id}`}
-                    className="relative text-gray-700 dark:text-gray-300 hover:text-yellow-400 dark:hover:text-yellow-400 transition-colors duration-300 font-medium tracking-wide group"
+                    className="relative text-gray-700 hover:text-yellow-400 transition-colors duration-300 font-medium tracking-wide group"
                     scroll={true}
                   >
                     {item.label}
@@ -118,18 +76,6 @@ export default function Header() {
                 </motion.li>
               ))}
             </ul>
-
-            {/* Theme Toggle Button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              onClick={toggleTheme}
-              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black transition-all duration-300 shadow-md hover:shadow-lg"
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
-            </motion.button>
 
             {/* CTA Button */}
             <motion.div
@@ -141,26 +87,16 @@ export default function Header() {
                 href="#contact"
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 hover:scale-105"
               >
-                Let's Talk
+                Let&apos;s Talk
               </Link>
             </motion.div>
           </nav>
 
           {/* Mobile Menu Controls */}
           <div className="lg:hidden flex items-center space-x-4">
-            {/* Mobile Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
-            </button>
-
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black transition-all duration-300"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 text-gray-700 hover:bg-yellow-400 hover:text-black transition-all duration-300"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <FaTimes size={18} /> : <HiMenuAlt3 size={18} />}
@@ -178,7 +114,7 @@ export default function Header() {
               transition={{ duration: 0.3 }}
               className="lg:hidden overflow-hidden"
             >
-              <div className="pt-6 pb-4 border-t border-gray-200/20 dark:border-gray-700/20 mt-4">
+              <div className="pt-6 pb-4 border-t border-gray-200/20 mt-4">
                 <nav className="flex flex-col space-y-4">
                   {navItems.map((item, index) => (
                     <motion.div
@@ -189,7 +125,7 @@ export default function Header() {
                     >
                       <Link
                         href={`#${item.id}`}
-                        className="block py-2 px-4 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 font-medium"
+                        className="block py-2 px-4 rounded-lg text-gray-700 hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 font-medium"
                         onClick={() => setIsMenuOpen(false)}
                         scroll={true}
                       >
@@ -197,7 +133,7 @@ export default function Header() {
                       </Link>
                     </motion.div>
                   ))}
-                  
+
                   {/* Mobile CTA */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -210,7 +146,7 @@ export default function Header() {
                       className="block w-full text-center py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Let's Talk
+                      Let&apos;s Talk
                     </Link>
                   </motion.div>
                 </nav>
