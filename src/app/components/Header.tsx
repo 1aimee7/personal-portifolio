@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon, FaSun, FaCode, FaTimes } from 'react-icons/fa';
+import { HiMenuAlt3 } from 'react-icons/hi';
 
 const navItems = [
   { id: 'home', label: 'Home' },
@@ -16,6 +17,18 @@ const navItems = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll effect for header background
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Load theme from localStorage or system preference on mount
   useEffect(() => {
@@ -58,69 +71,154 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-md p-4 fixed top-0 w-full z-20">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="#home" className="text-2xl font-bold flex items-center">
-          <span className="text-primary">AIMEE</span>
-          <span className="text-gray-800 dark:text-white ml-1">ISHIMWE</span>
-        </Link>
-        <nav className="relative flex items-center">
-          <ul className="hidden md:flex space-x-6">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={`#${item.id}`}
-                  className="hover:text-primary transition-colors font-medium text-gray-800 dark:text-gray-200"
-                  scroll={true}
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo/Brand */}
+          <Link 
+            href="#home" 
+            className="group flex items-center space-x-3 text-2xl font-bold tracking-tight"
+          >
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg shadow-lg group-hover:shadow-yellow-400/25 transition-all duration-300">
+              <FaCode className="text-black text-lg" />
+            </div>
+            <div className="flex items-center">
+              <span className="text-yellow-400 group-hover:text-yellow-300 transition-colors">AIMEE</span>
+              <span className="text-gray-800 dark:text-white ml-2 group-hover:text-gray-600 dark:group-hover:text-gray-200 transition-colors">ISHIMWE</span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            <ul className="flex items-center space-x-8">
+              {navItems.map((item, index) => (
+                <motion.li
+                  key={item.id}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <button
-            className="md:hidden flex flex-col space-y-1 ml-4"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <span className="block w-6 h-0.5 bg-gray-800 dark:bg-white"></span>
-            <span className="block w-6 h-0.5 bg-gray-800 dark:bg-white"></span>
-            <span className="block w-6 h-0.5 bg-gray-800 dark:bg-white"></span>
-          </button>
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="ml-4 text-gray-800 dark:text-gray-200 hover:text-primary transition-colors"
-            aria-label="Toggle theme"
-          >
-            {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-          </button>
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 bg-gray-800 p-4 rounded-md shadow-lg mt-2 z-10"
+                  <Link
+                    href={`#${item.id}`}
+                    className="relative text-gray-700 dark:text-gray-300 hover:text-yellow-400 dark:hover:text-yellow-400 transition-colors duration-300 font-medium tracking-wide group"
+                    scroll={true}
+                  >
+                    {item.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 group-hover:w-full transition-all duration-300"></span>
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+
+            {/* Theme Toggle Button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black transition-all duration-300 shadow-md hover:shadow-lg"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+            </motion.button>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <Link
+                href="#contact"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 hover:scale-105"
               >
-                <ul className="flex flex-col space-y-3">
-                  {navItems.map((item) => (
-                    <li key={item.id}>
+                Let's Talk
+              </Link>
+            </motion.div>
+          </nav>
+
+          {/* Mobile Menu Controls */}
+          <div className="lg:hidden flex items-center space-x-4">
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black transition-all duration-300"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <FaSun size={16} /> : <FaMoon size={16} />}
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-black transition-all duration-300"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <FaTimes size={18} /> : <HiMenuAlt3 size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:hidden overflow-hidden"
+            >
+              <div className="pt-6 pb-4 border-t border-gray-200/20 dark:border-gray-700/20 mt-4">
+                <nav className="flex flex-col space-y-4">
+                  {navItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
                       <Link
                         href={`#${item.id}`}
-                        className="hover:text-primary transition-colors font-medium text-gray-200"
+                        className="block py-2 px-4 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 font-medium"
                         onClick={() => setIsMenuOpen(false)}
                         scroll={true}
                       >
                         {item.label}
                       </Link>
-                    </li>
+                    </motion.div>
                   ))}
-                </ul>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
+                  
+                  {/* Mobile CTA */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: navItems.length * 0.1 }}
+                    className="pt-4"
+                  >
+                    <Link
+                      href="#contact"
+                      className="block w-full text-center py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Let's Talk
+                    </Link>
+                  </motion.div>
+                </nav>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </header>
+    </motion.header>
   );
 }
