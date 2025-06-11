@@ -35,8 +35,8 @@ export default function Header() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20'
-          : 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20'
+          ? 'bg-[#ffffff7a] backdrop-blur-md shadow-lg border-b border-gray-200/20'
+          : 'bg-[#ffffff7a] backdrop-blur-md shadow-lg border-b border-gray-200/20'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4">
@@ -87,7 +87,7 @@ export default function Header() {
                 href="#contact"
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 hover:scale-105"
               >
-                Let&apos;s Talk
+                Let's Talk
               </Link>
             </motion.div>
           </nav>
@@ -146,7 +146,7 @@ export default function Header() {
                       className="block w-full text-center py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Let&apos;s Talk
+                      Let's Talk
                     </Link>
                   </motion.div>
                 </nav>
@@ -158,4 +158,3 @@ export default function Header() {
     </motion.header>
   );
 }
-  
