@@ -67,7 +67,7 @@ export default function Header() {
                 >
                   <Link
                     href={`#${item.id}`}
-                    className="relative text-gray-700 hover:text-yellow-400 transition-colors duration-300 font-medium tracking-wide group"
+                    className="relative text-black hover:text-yellow-400 transition-colors duration-300 font-medium tracking-wide group"
                     scroll={true}
                   >
                     {item.label}
@@ -87,7 +87,7 @@ export default function Header() {
                 href="#contact"
                 className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 hover:scale-105"
               >
-                Let's Talk
+                Let&apos;s Talk
               </Link>
             </motion.div>
           </nav>
@@ -125,7 +125,7 @@ export default function Header() {
                     >
                       <Link
                         href={`#${item.id}`}
-                        className="block py-2 px-4 rounded-lg text-gray-700 hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 font-medium"
+                        className="block py-2 px-4 rounded-lg text-black hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 font-medium"
                         onClick={() => setIsMenuOpen(false)}
                         scroll={true}
                       >
@@ -146,7 +146,7 @@ export default function Header() {
                       className="block w-full text-center py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold rounded-lg hover:shadow-lg transition-all duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Let's Talk
+                      Let&apos;s Talk
                     </Link>
                   </motion.div>
                 </nav>

@@ -70,7 +70,7 @@ const ProfessionalHeroSection = () => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl lg:text-2xl text-gray-300 font-light"
               >
-                Senior Frontend Developer & UI/UX Specialist
+                 Frontend Developer & UI/UX Designer
               </motion.p>
             </div>
 
